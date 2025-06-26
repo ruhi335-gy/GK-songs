@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>G.K Songs</title>
+  <link rel="icon" href="app.jpg" type="image/jpeg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     * {
@@ -431,16 +432,22 @@
     });
 
     finalDownloadBtn.addEventListener('click', () => {
-      if (!currentSongDownloadUrl) return;
-      const filename = currentSongTitle.trim().replace(/\s+/g, '_') + '.mp3';
-      const a = document.createElement('a');
-      a.href = currentSongDownloadUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      closeDownloadPopup();
-    });
+  if (!currentSongDownloadUrl) return;
+
+  // 🛑 Pause the song before downloading
+  popupAudio.pause();
+  popupAudio.currentTime = 0;
+
+  const filename = currentSongTitle.trim().replace(/\s+/g, '_') + '.mp3';
+  const a = document.createElement('a');
+  a.href = currentSongDownloadUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  closeDownloadPopup();
+});
 
     function closeDownloadPopup() {
       downloadPopup.style.display = "none";
