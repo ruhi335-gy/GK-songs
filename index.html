@@ -7,286 +7,339 @@
   <link rel="icon" href="app.jpg" type="image/jpeg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+html { scroll-behavior: smooth; }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #131313;
-      overflow-x: hidden;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #131313;
+  overflow-x: hidden;
+}
 
-    /* Loading Screen */
-    .loading-screen {
-      text-align: center;
-      padding: 20px;
-      max-width: 90%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+.loading-screen {
+  text-align: center;
+  padding: 20px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .loading-screen .app-icon img {
-      width: 80px;
-      height: 80px;
-      opacity: 0;
-      animation: fadeIn 2s ease-in-out forwards;
-    }
+.loading-screen .app-icon img {
+  width: 80px;
+  height: 80px;
+  opacity: 0;
+  animation: fadeIn 2s ease-in-out forwards;
+}
 
-    .loading-screen h1 {
-      margin-top: 15px;
-      font-size: 22px;
-      color: #ffffff;
-    }
+.loading-screen h1 {
+  margin-top: 15px;
+  font-size: 22px;
+  color: #ffffff;
+}
 
-    .loader {
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid #3498db;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      margin: 20px auto;
-      animation: spin 1s linear infinite;
-    }
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+}
 
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+@media (min-width: 768px) {
+  .loading-screen .app-icon img { width: 100px; height: 100px; }
+  .loading-screen h1 { font-size: 26px; }
+  .loader { width: 50px; height: 50px; }
+}
 
-    @media (min-width: 768px) {
-      .loading-screen .app-icon img {
-        width: 100px;
-        height: 100px;
-      }
+#main-content { display: none; background: #f0f0f0; color: black; }
 
-      .loading-screen h1 {
-        font-size: 26px;
-      }
+/* Header with circular logo left and title next to it */
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
-      .loader {
-        width: 50px;
-        height: 50px;
-      }
-    }
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    /* Main Content (Initially hidden) */
-    #main-content {
-      display: none;
-      background: #f0f0f0;
-      color: black;
-    }
+.logo-title img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* circular */
+  object-fit: cover;
+  margin-right: 0;
+}
 
-    header {
-      background-color: #333;
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-    }
+.logo-title h2 {
+  margin: 0;
+  font-size: 22px;
+}
 
-    .logo-title {
-      display: flex;
-      align-items: center;
-    }
+/* Search container aligned right */
+.search-container {
+  margin-left: auto;
+}
 
-    .logo-title img {
-      width: 40px;
-      margin-right: 10px;
-    }
+#searchInput {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
 
-    .song-list {
-      padding: 20px;
-    }
+.song-list { padding: 20px; }
 
-    .song {
-      display: flex;
-      align-items: center;
-      background: white;
-      margin-bottom: 15px;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+/* Song item: image left, smaller, title next to it */
+.song {
+  display: flex;
+  align-items: center;
+  background: white;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-    .song img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      margin-right: 15px;
-      border-radius: 5px;
-    }
+.song img {
+  width: 60px;       /* smaller image */
+  height: 60px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 5px;
+}
 
-    .song-title {
-      font-size: 18px;
-      font-weight: bold;
-    }
+.song-title {
+  font-size: 18px;
+  font-weight: bold;
+}
 
-    .popup, .download-popup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
+/* Popup styles */
+/* Popup container */
+.popup, .download-popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
 
-    .popup-content, .download-popup-content {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      position: relative;
-      width: 90%;
-      max-width: 500px;
-      text-align: center;
-    }
+/* Popup content: flex with image left and title right */
+.popup-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  text-align: left;
+}
 
-    .popup-song-info img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+.popup-song-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
 
-    .title {
-      margin-top: 10px;
-      font-size: 18px;
-      font-weight: bold;
-    }
+.popup-song-info img {
+  width: 60px;    /* smaller popup image */
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
 
-    .download-btn, .final-download-btn {
-      display: none;
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  flex-grow: 1;
+}
 
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+/* YouTube iframe in popup */
+#youtubeContainer iframe {
+  width: 100%;
+  height: 250px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
 
-    .feedback-form {
-      background: #fff;
-      padding: 20px;
-      margin: 40px auto;
-      border-radius: 8px;
-      max-width: 600px;
-    }
+/* Download buttons */
+.download-btn, .final-download-btn {
+  display: none;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
 
-    .feedback-form input,
-    .feedback-form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+/* Close buttons */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .feedback-form button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-    }
+/* Feedback form styling */
+.feedback-form {
+  background: #fff;
+  padding: 20px;
+  margin: 40px auto;
+  border-radius: 8px;
+  max-width: 600px;
+}
 
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+.feedback-form input,
+.feedback-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-    .social-icons {
-      text-align: center;
-      margin: 20px 0;
-    }
+.feedback-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
-    .social-icons i {
-      margin: 0 10px;
-      font-size: 20px;
-      cursor: pointer;
-      color: #363636;
-    }
+/* Footer */
+footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
 
-    audio {
-      width: 100%;
-      margin-top: 15px;
-    }
+.social-icons {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.social-icons i {
+  margin: 0 10px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #363636;
+}
+
+/* Audio player width */
+audio {
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* Responsive improvements */
+@media (max-width: 480px) {
+  .popup-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .popup-song-info {
+    justify-content: center;
+  }
+
+  .popup-song-info img {
+    margin-bottom: 10px;
+  }
+
+  .song img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+
+  .song-title {
+    font-size: 16px;
+  }
+
+  .logo-title h2 {
+    font-size: 18px;
+  }
+}
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
   <div class="loading-screen" id="loading-screen">
     <div class="app-icon">
       <img src="app.jpg" alt="App Icon">
     </div>
-    <h1>G.K Songs</h1>
+    <h3>G.K Songs</h3>
     <div class="loader"></div>
   </div>
 
-  <!-- Main Song Page -->
   <div id="main-content">
     <header>
       <div class="logo-title">
         <img src="app.jpg" alt="App Logo" />
         <h2>G.K songs</h2>
       </div>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search songs..." onkeyup="filterSongs()" />
+      </div>
     </header>
 
-    <div class="song-list">
-      <div class="song" onclick="openPopup('song1.jpg', 'Tere bin kaha', 'song1.mp3')">
+    <div class="song-list" id="songList">
+      <div class="song" onclick="openPopup('song1.jpg', 'Tere bin kaha', 'song1.mp3', 'https://www.youtube.com/embed/zY6bmNrWFrI?')">
         <img src="song1.jpg" alt="Song 1" />
         <div class="song-title">Tere bin kaha</div>
       </div>
 
-      <div class="song" onclick="openPopup('song2.jpg', 'Tu jane na', 'song2.mp3')">
+      <div class="song" onclick="openPopup('song2.jpg', 'Tu jane na', 'song2.mp3', 'https://www.youtube.com/embed/WPbbTMQb2QM?si=PoOivzkDgSq7naV1')">
         <img src="song2.jpg" alt="Song 2" />
         <div class="song-title">Tu jane na</div>
       </div>
-    </div>
 
-    <div class="song" onclick="openPopup('song3.jpg', 'main hi kyon', 'song3.mp3')">
-        <img src="song3.jpg" alt="Song 2" />
-        <div class="song-title">main hi kyon</div>
+      <div class="song" onclick="openPopup('song3.jpg', 'Main hi kyon', 'song3.mp3',  'https://www.youtube.com/embed/aC-cMjj_oiQ?')">
+        <img src="song3.jpg" alt="Song 3" />
+        <div class="song-title">Main hi kyon</div>
       </div>
     </div>
 
-    <!-- Popup -->
+    <div class="song" onclick="openPopup('song4.jpg', 'Main hi kyon', 'song4.mp3',  'https://www.youtube.com/embed/1An3J8u-JPQ?')">
+        <img src="song4.jpg" alt="Song 3" />
+        <div class="song-title">One side love</div>
+      </div>
+    </div>
+
     <div class="popup" id="popup">
       <div class="popup-content">
         <button class="close-btn" onclick="closePopup()">×</button>
@@ -294,12 +347,13 @@
           <img id="popup-song-img" src="" alt="Song cover image" />
           <div id="popupSongTitle" class="title"></div>
         </div>
-        <audio id="popupAudio" controls></audio>
+        <div id="youtubeContainer" style="display:none; margin-top:15px;">
+          <iframe id="youtubeFrame" frameborder="0" allowfullscreen></iframe>
+        </div>
         <button class="download-btn" id="downloadBtn">Download</button>
       </div>
     </div>
 
-    <!-- Download Countdown Popup -->
     <div class="download-popup" id="downloadPopup">
       <div class="download-popup-content">
         <button class="close-btn" onclick="closeDownloadPopup()">×</button>
@@ -308,20 +362,14 @@
       </div>
     </div>
 
-    <!-- Feedback & Social -->
     <div class="feedback-form">
       <div class="social-follow">
         <h3 style="text-align:center; margin-bottom: 10px;">Follow Us</h3>
         <div class="social-icons">
-          <a href="https://www.instagram.com/it_lonely.boy" target="_blank">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="https://www.youtube.com/@G.Ksong2.0" target="_blank">
-            <i class="fab fa-youtube"></i>
-          </a>
+          <a href="https://www.instagram.com/it_lonely.boy" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@G.Ksong2.0" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
-
       <h3>Send us Feedback</h3>
       <form id="feedbackForm">
         <input type="text" id="name" placeholder="Your Name" required>
@@ -336,16 +384,14 @@
     </footer>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
   <script>
-    // Show main content after 3 seconds
     setTimeout(() => {
       document.getElementById('loading-screen').style.display = 'none';
       document.getElementById('main-content').style.display = 'block';
       document.body.style.backgroundColor = "#f0f0f0";
+      document.getElementById('searchInput').focus();
     }, 3000);
 
     const firebaseConfig = {
@@ -357,7 +403,6 @@
       messagingSenderId: "397851490897",
       appId: "1:397851490897:web:8758959ab67661df0d9670"
     };
-
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
@@ -366,18 +411,13 @@
       const name = document.getElementById('name').value.trim();
       const message = document.getElementById('message').value.trim();
       const statusMsg = document.getElementById('statusMsg');
-      statusMsg.textContent = '';
       if (name && message) {
-        database.ref('feedbacks').push({
-          name,
-          message,
-          timestamp: new Date().toISOString()
-        }).then(() => {
+        database.ref('feedbacks').push({ name, message, timestamp: new Date().toISOString() })
+        .then(() => {
           statusMsg.textContent = "Thank you! Feedback sent.";
           document.getElementById('feedbackForm').reset();
-        }).catch(err => {
-          statusMsg.textContent = "Error: " + err.message;
-        });
+        })
+        .catch(err => statusMsg.textContent = "Error: " + err.message);
       }
     });
 
@@ -386,47 +426,49 @@
     const popupSongTitle = document.getElementById("popupSongTitle");
     const popupAudio = document.getElementById("popupAudio");
     const downloadBtn = document.getElementById("downloadBtn");
-
     const downloadPopup = document.getElementById("downloadPopup");
     const countdownText = document.getElementById("countdownText");
     const finalDownloadBtn = document.getElementById("finalDownloadBtn");
+    const youtubeFrame = document.getElementById("youtubeFrame");
+    const youtubeContainer = document.getElementById("youtubeContainer");
 
     let currentSongDownloadUrl = "";
     let currentSongTitle = "";
     let timeout;
 
-    function openPopup(imgUrl, title, downloadUrl) {
-      popup.style.display = "flex";
-      popupSongImg.src = imgUrl;
-      popupSongTitle.textContent = title;
-      popupAudio.src = downloadUrl;
-      popupAudio.play();
-      downloadBtn.style.display = "none";
+    function openPopup(imgUrl, title, downloadUrl, youtubeUrl = '') {
+    popup.style.display = "flex";
+    popupSongImg.src = imgUrl;
+    popupSongTitle.textContent = title;
+    downloadBtn.style.display = "none";
+    currentSongDownloadUrl = downloadUrl;
+    currentSongTitle = title;
 
-      currentSongDownloadUrl = downloadUrl;
-      currentSongTitle = title;
-
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        downloadBtn.style.display = "inline-block";
-      }, 3000);
+    if (youtubeUrl) {
+    youtubeFrame.src = youtubeUrl + "?autoplay=1&mute=1";
+    youtubeContainer.style.display = 'block';
+     } else {
+    youtubeFrame.src = '';
+    youtubeContainer.style.display = 'none';
     }
+
+    clearTimeout(timeout);
+    timeout = setTimeout(() => downloadBtn.style.display = "inline-block", 3000);
+  }
+
 
     function closePopup() {
       popup.style.display = "none";
-      popupAudio.pause();
-      popupAudio.currentTime = 0;
+      youtubeFrame.src = '';
       downloadBtn.style.display = "none";
     }
 
     downloadBtn.addEventListener('click', () => {
       popup.style.display = "none";
       downloadPopup.style.display = "flex";
-
       let counter = 10;
       countdownText.textContent = counter;
       finalDownloadBtn.style.display = "none";
-
       const interval = setInterval(() => {
         counter--;
         countdownText.textContent = counter;
@@ -438,27 +480,30 @@
     });
 
     finalDownloadBtn.addEventListener('click', () => {
-  if (!currentSongDownloadUrl) return;
-
-  // 🛑 Pause the song before downloading
-  popupAudio.pause();
-  popupAudio.currentTime = 0;
-
-  const filename = currentSongTitle.trim().replace(/\s+/g, '_') + '.mp3';
-  const a = document.createElement('a');
-  a.href = currentSongDownloadUrl;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  closeDownloadPopup();
-});
+      if (!currentSongDownloadUrl) return;
+      const filename = currentSongTitle.trim().replace(/\s+/g, '_') + '.mp3';
+      const a = document.createElement('a');
+      a.href = currentSongDownloadUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      closeDownloadPopup();
+    });
 
     function closeDownloadPopup() {
       downloadPopup.style.display = "none";
       countdownText.textContent = "10";
       finalDownloadBtn.style.display = "none";
+    }
+
+    function filterSongs() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const songs = document.querySelectorAll('.song');
+      songs.forEach(song => {
+        const title = song.querySelector('.song-title').textContent.toLowerCase();
+        song.style.display = title.includes(input) ? 'flex' : 'none';
+      });
     }
   </script>
 </body>
